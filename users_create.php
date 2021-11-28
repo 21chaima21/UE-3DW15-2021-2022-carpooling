@@ -2,6 +2,7 @@
 
 use App\Controllers\UsersController;
 use App\Services\CarsService;
+use App\Services\AnnonceService;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -10,6 +11,9 @@ echo $controller->createUser();
 
 $carsService = new CarsService();
 $cars = $carsService->getCars();
+
+$annonceService = new AnnonceService();
+$annonce = $annonceService->getAnnonce();
 ?>
 
 <p>Création d'un utilisateur</p>
