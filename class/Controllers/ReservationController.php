@@ -16,16 +16,16 @@ class ReservationController
 
         // If the form have been submitted :
         if (isset($_POST['dateReservation']) &&
-            isset($_POST['premiereValidation']) &&
-            isset($_POST['validationdefinitive']) &&
+            isset($_POST['portable']) &&
+            isset($_POST['notes']) &&
             isset($_POST['nbPlacesDemandees'])) {
             // Create the reservation :
             $reservationService = new ReservationService();
             $reservationId = $reservationService->setreservation(
                 null,
                 $_POST['dateReservation'],
-                $_POST['premiereValidation'],
-                $_POST['validationdefinitive'],
+                $_POST['portable'],
+                $_POST['notes'],
                 $_POST['nbPlacesDemandees']
             );
 
@@ -64,8 +64,8 @@ class ReservationController
             $html .=
                 '#' . $reservation->getId() . ' ' .
                 $reservation->getDateReservation()->format('d-m-Y')  . ' ' .
-                $reservation->getPremiereValidation() . ' ' .
-                $reservation->getValidationDefinitive() . ' ' .
+                $reservation->getPortable() . ' ' .
+                $reservation->getNotes() . ' ' .
                 $reservation->getNbPlacesDemandees() . ' ' .
                 $usersHtml . '<br />';
 
@@ -87,16 +87,16 @@ class ReservationController
         // If the form have been submitted :
         if (isset($_POST['id']) &&
             isset($_POST['dateReservation']) &&
-            isset($_POST['premiereValidation']) &&
-            isset($_POST['validationDefinitive']) &&
+            isset($_POST['portable']) &&
+            isset($_POST['notes']) &&
             isset($_POST['nbPlacesDemandees'])) {
             // Update the reservation :
             $reservationService = new ReservationService();
             $isOk = $reservationService->setReservation(
                 $_POST['id'],
                 $_POST['dateReservation'],
-                $_POST['premiereValidation'],
-                $_POST['validationdefinitive'],
+                $_POST['portable'],
+                $_POST['notes'],
                 $_POST['nbPlacesDemandees']
             );
             if ($isOk) {
