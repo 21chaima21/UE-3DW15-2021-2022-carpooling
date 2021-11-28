@@ -1,9 +1,12 @@
+
 <?php
 
 namespace App\Services;
 
 
 use App\Entities\Annonce;
+use App\Entities\Car;
+
 
 class AnnonceService
 {
@@ -64,5 +67,44 @@ class AnnonceService
         $isOk = $dataBaseService->deleteAnnonce($id);
 
         return $isOk;
+    }
+    
+    /**
+     * Create relation bewteen an annonce and his car.
+     */
+    public function setAnnonceCar(string $annonceId, string $carId): bool
+    {
+        $isOk = false;
+
+        $dataBaseService = new DataBaseService();
+        $isOk = $dataBaseService->setAnnonceCar($annonceId, $carId);
+
+        return $isOk;
+    }
+
+    /**
+     * Get cars of given annonce id.
+     */
+    public function getAnnonceCars(string $annonceId): array
+    {
+        $annonceCars = [];
+
+        $dataBaseService = new DataBaseService();
+
+        // Get relation annonce and cars :
+        $annonceCarsDTO = $dataBaseService->getAnnonceCars($annonceId);
+        if (!empty($annonceCarsDTO)) {
+            foreach ($annonceCarsDTO as $annonceCarDTO) {
+                $car = new Car();
+                $car->setId($annonceCarDTO['id']);
+                $car->setBrand($annonceCarDTO['brand']);
+                $car->setModel($annonceCarDTO['model']);
+                $car->setColor($annonceCarDTO['color']);
+                $car->setNbrSlots($annonceCarDTO['nbrSlots']);
+                $annonceCars[] = $car;
+            }
+        }
+
+        return $annonceCars;
     }
 }
