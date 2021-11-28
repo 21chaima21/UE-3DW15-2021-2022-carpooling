@@ -190,4 +190,59 @@ class DataBaseService
 
         return $reservationId;
     }
+    
+    /**
+     * Return all reservation.
+     */
+    public function getReservation(): array
+    {
+        $reservation = [];
+
+        $sql = 'SELECT * FROM reservation';
+        $query = $this->connection->query($sql);
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($results)) {
+            $reservation = $results;
+        }
+
+        return $reservation;
+    }
+    
+  /**
+     * Update an reservation.
+     */
+    public function updateReservation(string $id, DateTime $datereservation, string $portable, string $notes, string $nbplacesdemandees): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'id' => $id,
+            '$datereservation' => $datereservation->format(DateTime::RFC3339),
+            '$portable' => $portable,
+            '$notes' => $notes,
+            '$nbplacesdemandees' => $nbplacesdemandees,
+        ];
+        $sql = 'UPDATE reservation SET datereservation = :datereservation, portable = :portable, notes = :notes, nbplacesdemandees = :nbplacesdemandees WHERE id = :id;';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+    
+    /**
+     * Delete an reservation.
+     */
+    public function deleteReservation(string $id): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'id' => $id,
+        ];
+        $sql = 'DELETE FROM reservation WHERE id = :id;';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
 }
