@@ -18,7 +18,8 @@ class AnnonceController
             isset($_POST['dates']) &&
             isset($_POST['ride']) &&
             isset($_POST['nbrPlacesDisp']) &&
-            isset($_POST['description'])) {
+            isset($_POST['description']) &&           
+            isset($_POST['reservation'])) {
             // Create the annonce :
             $annonceService = new AnnonceService();
             $annonceId = $annonceService->setAnnonce(
