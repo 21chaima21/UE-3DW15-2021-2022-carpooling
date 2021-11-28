@@ -27,8 +27,8 @@ class ReservationService
                     $reservation->setDateReservation($date);
                 }
                 
-                $reservation->setPremiereValidation($reservationDTO['setPremiereValidation']);
-                $reservation->setValidationDefinitive($reservationDTO['setValidationDefinitive']);
+                $reservation->setPortable($reservationDTO['setPortable']);
+                $reservation->setNotes($reservationDTO['setNotes']);
                 $reservation->setNbPlacesDemandees($reservationDTO['setNbPlacesDemandees']);
                 $reservation[] = $reservation;
             }
@@ -47,9 +47,9 @@ class ReservationService
         $dataBaseService = new DataBaseService();
         $datereservation = new DateTime($datereservation);
         if (empty($id)) {
-            $reservationId = $dataBaseService->createReservation($datereservation, $premierevalidation, $validationdefinitive, $nbplacedemandees);
+            $reservationId = $dataBaseService->createReservation($datereservation, $portable, $notes, $nbplacedemandees);
         } else {
-            $dataBaseService->updateReservation($id, $datereservation, $premierevalidation, $validationdefinitive, $nbplacedemandees);
+            $dataBaseService->updateReservation($id, $datereservation, $portable, $notes, $nbplacedemandees);
             $reservationId = $id;
         }
 
