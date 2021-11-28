@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Entities\Annonce;
 use App\Entities\Car;
 use App\Entities\User;
 use DateTime;
@@ -111,4 +112,44 @@ class UsersService
 
         return $userCars;
     }
+
+     /**
+     * Create relation bewteen an user and his annonce.
+     */
+    public function setUserAnnonce(string $userId, string $annonceId): bool
+    {
+        $isOk = false;
+
+        $dataBaseService = new DataBaseService();
+        $isOk = $dataBaseService->setUserAnnonce($userId, $annonceId);
+
+        return $isOk;
+    }
+
+    /**
+     * Get cars of given user id.
+     */
+    public function getUserCars(string $userId): array
+    {
+        $userAnnonce = [];
+
+        $dataBaseService = new DataBaseService();
+
+        // Get relation users and annonce :
+        $usersAnnonceDTO = $dataBaseService->getUserAnnonce($userId);
+        if (!empty($usersAnnonceDTO)) {
+            foreach ($usersAnnonceDTO as $userAnnonceDTO) {
+                $car = new Annonce();
+                $car->setId($userAnnonceDTO['id']);
+                $car->setBrand($userAnnonceDTO['brand']);
+                $car->setModel($userAnnonceDTO['model']);
+                $car->setColor($userAnnonceDTO['color']);
+                $car->setNbrSlots($userAnnonceDTO['nbrSlots']);
+                $userAnnonce[] = $annonce;
+            }
+        }
+
+        return $userAnnonce;
+    }
 }
+
