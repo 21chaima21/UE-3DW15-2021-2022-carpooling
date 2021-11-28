@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Entities\Annonce;
 use App\Entities\Car;
+use App\Entities\reservation;
 
 
 class AnnonceService
@@ -51,6 +52,11 @@ class AnnonceService
 
             
             }
+            // Get reservation of this Annonce :
+                $reservation = $this->getAnnonceReservation($AnnonceDTO['id']);
+                $annonce->setReservation($reservation);
+
+                $annonce[] = $annonce;
         }
 
         return $annonce;
@@ -106,5 +112,44 @@ class AnnonceService
         }
 
         return $annonceCars;
+    }
+    
+    /**
+     * Create relation bewteen an annonce and his reservation.
+     */
+    public function setAnnonceReservation(string $annonceId, string $reservationId): bool
+    {
+        $isOk = false;
+
+        $dataBaseService = new DataBaseService();
+        $isOk = $dataBaseService->setAnnonceReservation($annonceId, $reservationId);
+
+        return $isOk;
+    }
+
+    /**
+     * Get reservation of given annonce id.
+     */
+    public function getAnnonceReservation(string $annonceId): array
+    {
+        $annonceReservation = [];
+
+        $dataBaseService = new DataBaseService();
+
+        // Get relation annonce and reservation :
+        $annonceReservationDTO = $dataBaseService->getAnnonceReservation($annonceId);
+        if (!empty($annonceReservationDTO)) {
+            foreach ($annonceReservationDTO as $annonceReservationDTO) {
+                $reservation = new Reservation();
+                $reservation->setId($userCarDTO['id']);
+                $reservation->setDateReservation($userReservationDTO['dateReservation']);
+                $reservation->setPortable($userReservationDTO['portable']);
+                $reservation->setNotes($userReservationDTO['notes']);
+                $reservation->setNbPlacesDemandees($userReservationDTO['nbPlacesDemandees']);
+                $annonceReservation[] = $reservation;
+            }
+        }
+
+        return $annonceReservations;
     }
 }
