@@ -18,11 +18,11 @@ echo $controller->createReservation();
     <label for="datereservation">Date de réservation au format dd-mm-yyyy :</label>
     <input type="text" name="datereservation">
     <br />
-    <label for="premierevalidation">Premiere validation :</label>
-    <input type="text" name="premierevalidation">
+    <label for="portable">Numéro de telephone :</label>
+    <input type="text" name="portable">
     <br />
-    <label for="validationdefinitive">Validation definitive :</label>
-    <input type="text" name="validationdefinitive">
+    <label for="notes">Notes :</label>
+    <input type="text" name="notes">
     <br />
     <label for="nbplacesdemandees">Nombre de places :</label>
     <input type="text" name="nbplacesdemandees">
