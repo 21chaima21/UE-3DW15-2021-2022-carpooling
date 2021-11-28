@@ -141,7 +141,7 @@ class AnnonceService
         if (!empty($annonceReservationDTO)) {
             foreach ($annonceReservationDTO as $annonceReservationDTO) {
                 $reservation = new Reservation();
-                $reservation->setId($userCarDTO['id']);
+                $reservation->setId($userReservationDTO['id']);
                 $reservation->setDateReservation($userReservationDTO['dateReservation']);
                 $reservation->setPortable($userReservationDTO['portable']);
                 $reservation->setNotes($userReservationDTO['notes']);
