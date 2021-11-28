@@ -8,8 +8,8 @@ class Reservation
 {
     private $id;
     private $dateReservation;
-    private $premiereValidation;
-    private $validationDefinitive;
+    private $portable;
+    private $notes;
     private $nbPlacesDemandees;
 
     public function getId(): string
@@ -34,26 +34,26 @@ class Reservation
         $this->DateReservation = $DateReservation;   
     }
 
-    public function getPremiereValidation(): string
+    public function getPortable(): string
     {
-        return $this->PremiereValidation;
+        return $this->Portable;
     }
 
-    public function setPremiereValidation(string $premiereValidation): self
+    public function setPortable(string $portable): self
     {
-        $this->premiereValidation = $premiereValidation;
+        $this->portable = $portable;
 
         return $this;
     }
 
-    public function getValidationDefinitive(): string
+    public function getNotes(): string
     {
-        return $this->validationDefinitive;
+        return $this->notes;
     }
 
-    public function setValidationDefinitive(string $validationDefinitive): self
+    public function setNotes(string $notes): self
     {
-        $this->validationDefinitive = $validationDefinitive;
+        $this->notes = $notes;
 
         return $this;
     }
