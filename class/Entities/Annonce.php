@@ -12,6 +12,7 @@ class Annonce
     private $ride;
     private $nbrPlacesDisp;
     private $description;
+    private $reservation;
 
     public function getId(): string
     {
@@ -71,5 +72,15 @@ class Annonce
     public function setDescription(string $description): void
     {
         $this->description = $description;
+    }
+    
+    public function getReservation(): string
+    {
+        return $this->reservation;
+    }
+
+    public function setReservation(string $reservation): void
+    {
+        $this->reservation = $reservation;
     }
 }
