@@ -12,7 +12,7 @@ class DataBaseService
     const PORT = '3306';
     const DATABASE_NAME = 'carpooling';
     const MYSQL_USER = 'root';
-    const MYSQL_PASSWORD = 'password';
+    const MYSQL_PASSWORD = '';
 
     private $connection;
 
@@ -167,167 +167,145 @@ class DataBaseService
 
         return $userCars;
     }
-    
-    /**
-     * Create an reservation.
+
+/**
+     * Create an annonce.
      */
-    public function createReservation(DateTime $datereservation, string $portable, string $notes, string $nbplacesdemandees): string
+    public function createAnnonce(string $title, string $dates, string $ride, string $nbrPlacesDisp, string $descriptions): string
     {
-        $reservationId = '';
+        $annonceId = '';
 
         $data = [
-            'datereservation' => $datereservation->format(DateTime::RFC3339),
-            'portable' => $portable,
-            'notes' => $notes,
-            'nbplacesdemandees' => $nbplacesdemandees,
+            'title' => $title,
+            'dates' => $dates,
+            'ride' => $ride,
+            'nbrPlacesDisp' => $nbrPlacesDisp,
+            'descriptions' => $descriptions,
         ];
-        $sql = 'INSERT INTO reservation (datereservation, portable, notes, nbplacesdemandees) VALUES (:datereservation, :portable, :notes, :nbplacesdemandees)';
+        $sql = 'INSERT INTO annonce (title, dates, ride, nbrPlacesDisp, descriptions) VALUES (:title, :dates, :ride, :nbrPlacesDisp, :descriptions)';
         $query = $this->connection->prepare($sql);
         $isOk = $query->execute($data);
         if ($isOk) {
-            $reservationId = $this->connection->lastInsertId();
+            $annonceId = $this->connection->lastInsertId();
         }
 
-        return $reservationId;
+        return $annonceId;
     }
-    
-    /**
-     * Return all reservation.
-     */
-    public function getReservation(): array
-    {
-        $reservation = [];
 
-        $sql = 'SELECT * FROM reservation';
+    /**
+     * Return all annonce.
+     */
+    public function getAnnonce(): array
+    {
+        $annonce = [];
+
+        $sql = 'SELECT * FROM annonce';
         $query = $this->connection->query($sql);
         $results = $query->fetchAll(PDO::FETCH_ASSOC);
         if (!empty($results)) {
-            $reservation = $results;
+            $annonce = $results;
         }
 
-        return $reservation;
+        return $annonce;
     }
-    
-  /**
-     * Update an reservation.
+
+    /**
+     * Update an annonce.
      */
-    public function updateReservation(string $id, DateTime $datereservation, string $portable, string $notes, string $nbplacesdemandees): bool
+    public function updateAnnonce(string $id, string $title, string $dates, string $ride, string $nbrPlacesDisp, string $descriptions): bool
     {
         $isOk = false;
 
         $data = [
             'id' => $id,
-            '$datereservation' => $datereservation->format(DateTime::RFC3339),
-            '$portable' => $portable,
-            '$notes' => $notes,
-            '$nbplacesdemandees' => $nbplacesdemandees,
+            'title' => $title,
+            'dates' => $dates,
+            'ride' => $ride,
+            'nbrPlacesDisp' => $nbrPlacesDisp,
+            'descriptions' => $descriptions,
         ];
-        $sql = 'UPDATE reservation SET datereservation = :datereservation, portable = :portable, notes = :notes, nbplacesdemandees = :nbplacesdemandees WHERE id = :id;';
+        $sql = 'UPDATE annonce SET title = :title, dates = :dates, ride = :ride, nbrPlacesDisp = :nbrPlacesDisp, descriptions = :descriptions WHERE id = :id;';
         $query = $this->connection->prepare($sql);
         $isOk = $query->execute($data);
 
         return $isOk;
     }
-    
+
     /**
-     * Delete an reservation.
+     * Delete an annonce.
      */
-    public function deleteReservation(string $id): bool
+    public function deleteAnnonce(string $id): bool
     {
         $isOk = false;
 
         $data = [
             'id' => $id,
         ];
-        $sql = 'DELETE FROM reservation WHERE id = :id;';
+        $sql = 'DELETE FROM annonce WHERE id = :id;';
         $query = $this->connection->prepare($sql);
         $isOk = $query->execute($data);
 
         return $isOk;
     }
+
     
-     /**
-     * Create relation bewteen an user and his reservation.
-     */
-    public function setUserReservation(string $userId, string $reservationId): bool
-    {
-        $isOk = false;
-
-        $data = [
-            'userId' => $userId,
-            'reservationId' => $reservationId,
-        ];
-        $sql = 'INSERT INTO users_reservation (user_id, reservation_id) VALUES (:userId, :reservationId)';
-        $query = $this->connection->prepare($sql);
-        $isOk = $query->execute($data);
-
-        return $isOk;
-    }
     /**
-     * Get reservation of given user id.
+     * Return all cars.
      */
-    public function getUserreservation(string $userId): array
+    public function getCars(): array
     {
-        $userReservation = [];
+        $cars = [];
 
-        $data = [
-            'userId' => $userId,
-        ];
-        $sql = '
-            SELECT r.*
-            FROM reservation as r
-            LEFT JOIN users_reservation as ur ON uc.reservation_id = r.id
-            WHERE ur.user_id = :userId';
-        $query = $this->connection->prepare($sql);
-        $query->execute($data);
+        $sql = 'SELECT * FROM cars';
+        $query = $this->connection->query($sql);
         $results = $query->fetchAll(PDO::FETCH_ASSOC);
         if (!empty($results)) {
-            $userReservation = $results;
+            $cars = $results;
         }
 
-        return $userReservation;
+        return $cars;
     }
-    
+
     /**
-     * Create relation bewteen an annonce and his reservation.
+     * Create relation bewteen an annonce and his car.
      */
-    public function setAnnonceReservation(string $annonceId, string $reservationId): bool
+    public function setAnnonceCar(string $annonceId, string $carId): bool
     {
         $isOk = false;
 
         $data = [
             'userId' => $annonceId,
-            'reservationId' => $reservationId,
+            'carId' => $carId,
         ];
-        $sql = 'INSERT INTO annonce_reservation (annonce_id, reservation_id) VALUES (:annonceId, :reservationId)';
+        $sql = 'INSERT INTO annonce_cars (annonce_id, car_id) VALUES (:annonceId, :carId)';
         $query = $this->connection->prepare($sql);
         $isOk = $query->execute($data);
 
         return $isOk;
     }
-    
+
     /**
-     * Get reservation of given annonce id.
+     * Get cars of given annonce id.
      */
-    public function getAnnoncereservation(string $annonceId): array
+    public function getAnnonceCars(string $annonceId): array
     {
-        $annonceReservation = [];
+        $annonceCars = [];
 
         $data = [
             'annonceId' => $annonceId,
         ];
         $sql = '
-            SELECT r.*
-            FROM reservation as r
-            LEFT JOIN annonce_reservation as ar ON ac.reservation_id = r.id
-            WHERE ar.annonce_id = :annonceId';
+            SELECT c.*
+            FROM cars as c
+            LEFT JOIN annonce_cars as uc ON uc.car_id = c.id
+            WHERE uc.annonce_id = :annonceId';
         $query = $this->connection->prepare($sql);
         $query->execute($data);
         $results = $query->fetchAll(PDO::FETCH_ASSOC);
         if (!empty($results)) {
-            $userReservation = $results;
+            $annonceCars = $results;
         }
 
-        return $annonceReservation;
+        return $annonceCars;
     }
 }
