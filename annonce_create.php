@@ -1,14 +1,15 @@
 <?php
 
 use App\Controllers\AnnonceController;
-
+use App\Services\CarsService;
 
 require __DIR__ . '/vendor/autoload.php';
 
 $controller = new AnnonceController();
 echo $controller->createAnnonce();
 
-
+$carsService = new CarsService();
+$cars = $carsService->getCars();
 ?>
 
 <p>Création d'une annonce</p>
