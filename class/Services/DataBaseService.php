@@ -167,4 +167,27 @@ class DataBaseService
 
         return $userCars;
     }
+    
+    /**
+     * Create an reservation.
+     */
+    public function createReservation(DateTime $datereservation, string $portable, string $notes, string $nbplacesdemandees): string
+    {
+        $reservationId = '';
+
+        $data = [
+            'datereservation' => $datereservation->format(DateTime::RFC3339),
+            'portable' => $portable,
+            'notes' => $notes,
+            'nbplacesdemandees' => $nbplacesdemandees,
+        ];
+        $sql = 'INSERT INTO reservation (datereservation, portable, notes, nbplacesdemandees) VALUES (:datereservation, :portable, :notes, :nbplacesdemandees)';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+        if ($isOk) {
+            $reservationId = $this->connection->lastInsertId();
+        }
+
+        return $reservationId;
+    }
 }
